@@ -1,0 +1,156 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "hi",
+        "hello",
+        "hey",
+        "good morning",
+        "good afternoon",
+        "good evening",
+        "what's up",
+        "howdy",
+        "greetings",
+        "yo",
+        "hey there"
+      ],
+      "responses": [
+        "Hi there! 👋 How can I assist you today?",
+        "Hello! Need any help?",
+        "Hey! Ready to help you out. 😊"
+      ]
+    },
+    {
+      "tag": "how_are_you",
+      "patterns": [
+        "how are you",
+        "how are you doing",
+        "are you okay",
+        "what are you doing",
+        "are you fine",
+        "everything good?"
+      ],
+      "responses": [
+        "I'm doing great, thanks for asking! 😊 How can I help you?",
+        "All systems online! 🚀 How can I assist?",
+        "Feeling fantastic and ready to help! 💪"
+      ]
+    },
+    {
+      "tag": "name",
+      "patterns": [
+        "your name",
+        "what's your name",
+        "who are you",
+        "tell me your name"
+      ],
+      "responses": [
+        "I'm NeoMind 🤖, your smart personal assistant.",
+        "They call me NeoMind! 💡 Ready to help you."
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "bye",
+        "see you",
+        "goodbye",
+        "talk to you later",
+        "see you later"
+      ],
+      "responses": [
+        "Bye! Have a great day! 👋",
+        "See you soon! 😊",
+        "Take care! 🖖"
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": [
+        "thank you",
+        "thanks",
+        "thanks a lot",
+        "cheers",
+        "much appreciated"
+      ],
+      "responses": [
+        "You're welcome! 😊",
+        "Glad to help!",
+        "Anytime! Let me know if you need anything else."
+      ]
+    },
+    {
+      "tag": "weather",
+      "patterns": [
+        "what's the weather today",
+        "tell me the weather",
+        "is it sunny",
+        "rain today",
+        "weather update"
+      ],
+      "responses": [
+        "Please check the weather module on the dashboard 🌦️",
+        "Weather updates are available on your main dashboard."
+      ]
+    },
+    {
+      "tag": "joke",
+      "patterns": [
+        "tell me a joke",
+        "make me laugh",
+        "say something funny"
+      ],
+      "responses": [
+        "Why don't scientists trust atoms? Because they make up everything! 😂",
+        "I told a joke about construction... but I’m still working on it! 😅",
+        "Why did the computer go to therapy? It had too many bytes of issues! 🤖"
+      ]
+    },
+    {
+      "tag": "motivation",
+      "patterns": [
+        "motivate me",
+        "give me motivation",
+        "say something positive",
+        "inspire me"
+      ],
+      "responses": [
+        "Believe in yourself! You're capable of amazing things. 💪",
+        "Every day is a second chance. Keep pushing forward! 🌟",
+        "Your potential is endless. Stay strong and shine! ✨"
+      ]
+    },
+    {
+      "tag": "unknown",
+      "patterns": [
+        "ho really",
+        "oh ok",
+        "nice",
+        "wow",
+        "ho ok",
+        "hmm",
+        "okay then",
+        "i see",
+        "interesting"
+      ],
+      "responses": [
+        "I'm still learning 🧠. Try asking something else!",
+        "Hmm, not sure I understand. Ask me something else? 🤔"
+      ]
+    },
+    {
+      "tag": "study_help",
+      "patterns": [
+        "help me study",
+        "I need help with math",
+        "how to prepare for exams",
+        "any study tips?"
+      ],
+      "responses": [
+        "Sure! I can help you study. What subject are you working on?",
+        "Let’s create a study plan together! 📚"
+      ]
+    }
+  ]
+}
