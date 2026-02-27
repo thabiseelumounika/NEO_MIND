@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💬 NeoMind Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background-color: #000;
+      color: #00ffcc;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #111;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff66cc;
+      margin-bottom: 20px;
+    }
+
+    #chat-log {
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 15px;
+      height: 400px;
+      overflow-y: auto;
+      background-color: #000;
+      margin-bottom: 20px;
+    }
+
+    .user {
+      color: #00ffcc;
+      margin: 8px 0;
+    }
+
+    .bot {
+      color: #ff66cc;
+      margin: 8px 0;
+    }
+
+    #user-input {
+      width: 78%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #00ffcc;
+      background-color: #222;
+      color: #fff;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: #ff66cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff3385;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      color: #ccc;
+      text-decoration: none;
+      background-color: #222;
+      padding: 10px 15px;
+      border-radius: 6px;
+    }
+
+    .back-btn:hover {
+      color: #fff;
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>💬 NeoMind Chatbot</h2>
+
+    <div id="chat-log"></div>
+
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+
+    <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById("chat-form");
+    const userInput = document.getElementById("user-input");
+    const chatLog = document.getElementById("chat-log");
+
+    async function sendMessage(message) {
+      if (!message) return;
+      chatLog.innerHTML += `<div class="user"><strong>You:</strong> ${message}</div>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await response.json();
+        chatLog.innerHTML += `<div class="bot"><strong>NeoMind:</strong> ${data.reply}</div>`;
+        chatLog.scrollTop = chatLog.scrollHeight;
+      } catch (err) {
+        chatLog.innerHTML += `<div class="bot"><strong>NeoMind:</strong> ❌ Error connecting to backend.</div>`;
+      }
+    }
+
+    chatForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const message = userInput.value.trim();
+      if (message) {
+        sendMessage(message);
+        userInput.value = "";
+      }
+    });
+
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        chatForm.dispatchEvent(new Event("submit"));
+      }
+    });
+
+    // ✅ Auto send welcome message on load
+    document.addEventListener("DOMContentLoaded", function () {
+      sendMessage("Hello NeoMind!");
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forgot Password - NeoMind</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ffcc;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .reset-request-box {
+            background-color: #111;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00ffcc;
+            width: 400px;
+        }
+
+        .reset-request-box h2 {
+            color: #ff66cc;
+            text-align: center;
+        }
+
+        .reset-request-box label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .reset-request-box input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #222;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .reset-request-box input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff66cc;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-link a {
+            color: #00ffcc;
+            text-decoration: none;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message.success {
+            background-color: #004d40;
+            color: #00ffcc;
+        }
+
+        .message.danger {
+            background-color: #660000;
+            color: #ffcccc;
+        }
+
+        .message.info {
+            background-color: #003366;
+            color: #cceeff;
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-request-box">
+        <h2>Forgot Your Password?</h2>
+        <form method="POST">
+            <label for="email">Enter your registered email:</label>
+            <input type="email" name="email" required>
+
+            <input type="submit" value="Send Reset Link">
+
+            <div class="back-link">
+                <a href="{{ url_for('login') }}">🔙 Back to Login</a>
+            </div>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
+    </div>
+</body>
+</html>

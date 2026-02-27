@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NeoMind Dashboard</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #1a1a1a;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    h1 {
+      color: #ff66cc;
+      text-align: center;
+    }
+
+    h3 {
+      color: #00ffcc;
+      margin-top: 30px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #00ffcc;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="submit"],
+    input[type="date"],
+    select,
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #333;
+      color: white;
+      margin-top: 5px;
+    }
+
+    input[type="submit"],
+    button {
+      background-color: #ff66cc;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    input[type="submit"]:hover,
+    button:hover {
+      background-color: #00ffcc;
+      color: #000;
+    }
+
+    .flash-message {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .success { background-color: #006600; color: #ccffcc; }
+    .danger { background-color: #660000; color: #ffcccc; }
+    .info { background-color: #003366; color: #cce6ff; }
+
+    ul { list-style: none; padding-left: 0; }
+    li { padding: 8px 0; border-bottom: 1px solid #444; }
+
+    .clear-buttons form {
+      margin-top: 10px;
+    }
+
+    .glow-button {
+      background-color: #ff66cc;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .glow-button:hover {
+      background-color: #00ffcc;
+      color: #000;
+    }
+
+    .logout-btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logout-btn a {
+      background-color: #00ffcc;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .logout-btn a:hover {
+      background-color: #ff66cc;
+      color: #fff;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .time-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .time-row input,
+    .time-row select {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, {{ name }} 👋</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Alarm Form -->
+    <h3>⏰ Set a New Alarm</h3>
+    <form action="{{ url_for('dashboard') }}" method="POST">
+      <label for="alarm_date">Date</label>
+      <input type="date" name="alarm_date" required>
+
+      <label for="alarm_time">Time</label>
+      <div class="time-row">
+        <input type="number" name="alarm_hour" min="1" max="12" placeholder="HH" required>
+        <input type="number" name="alarm_minute" min="0" max="59" placeholder="MM" required>
+        <select name="alarm_ampm" required>
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+      </div>
+
+      <label for="message">Alarm Message</label>
+      <input type="text" name="message" placeholder="What's the alarm for?" required>
+
+      <input type="submit" value="Set Alarm">
+    </form>
+
+    <!-- Current Alarms -->
+    <h3>🕰️ Current Alarms</h3>
+    {% if alarms %}
+      <ul>
+        {% for alarm in alarms %}
+          <li>
+            <strong>{{ alarm.time | replace("T", " ") | datetimeformat }}</strong> – {{ alarm.message }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No alarms set</p>
+    {% endif %}
+
+    <div class="clear-buttons">
+      <form action="{{ url_for('clear_alarms') }}" method="POST">
+        <button type="submit">❌ Clear All Alarms</button>
+      </form>
+    </div>
+
+    <!-- Task Planner -->
+    <h3>🗓️ Add Task to Planner</h3>
+    <form action="{{ url_for('dashboard') }}" method="POST">
+      <label for="task_title">Title</label>
+      <input type="text" name="task_title" placeholder="Study, Meeting, etc." required>
+
+      <label for="task_date">Date</label>
+      <input type="date" name="task_date" required>
+
+      <label for="task_time">Time</label>
+      <div class="time-row">
+        <input type="number" name="task_hour" min="1" max="12" placeholder="HH" required>
+        <input type="number" name="task_minute" min="0" max="59" placeholder="MM" required>
+        <select name="task_ampm">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+      </div>
+
+      <label for="task_note">Notes</label>
+      <input type="text" name="task_note" placeholder="Additional notes (optional)">
+
+      <input type="submit" value="Add Task">
+    </form>
+
+    <!-- Display Upcoming Tasks -->
+    <h3>📅 Upcoming Tasks</h3>
+    {% if tasks %}
+      <ul>
+        {% for task in tasks %}
+          <li>
+            <strong>{{ task.title }}</strong> – {{ (task.date + ' ' + task.time) | datetimeformat }}<br>
+            <em>{{ task.note if task.note else '🗒️ No notes provided' }}</em>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No tasks added yet.</p>
+    {% endif %}
+
+    <div class="clear-buttons">
+      <form action="{{ url_for('clear_tasks') }}" method="POST">
+        <button type="submit">🗑️ Clear All Tasks</button>
+      </form>
+    </div>
+
+    <!-- Chatbot Button -->
+    <form action="{{ url_for('chatbot') }}" method="GET" target="_blank">
+      <button type="submit" class="glow-button">💬 Chat with NeoMind</button>
+    </form>
+
+    <div class="logout-btn">
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="footer">
+      NeoMind © 2025 — Your Personal Assistant
+    </div>
+  </div>
+</body>
+</html>
+
